@@ -458,13 +458,41 @@
             const body = document.getElementById('calendar-body');
             if (!body) return;
             body.innerHTML = '';
+
+            // CORRECT CALENDAR LOGIC FOR JANUARY 2026
+            // January 1, 2026 is a Thursday.
+            // Our grid starts on Monday.
+            // Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6, Sun=7
+            // Offset for Jan 1 (Thu) is 3 empty slots (Mon, Tue, Wed).
+            const offset = 3; 
+
+            // Add empty padding cells
+            for (let j = 0; j < offset; j++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'min-h-[160px] p-4 border-r border-b border-slate-100 bg-slate-50/10 cursor-default';
+                body.appendChild(emptyCell);
+            }
+
+            // Add the 31 days of January
             for (let i = 1; i <= 31; i++) {
                 const dayStr = `2026-01-${i.toString().padStart(2, '0')}`;
                 const posts = ads.filter(a => a.date === dayStr);
                 const cell = document.createElement('div');
                 cell.className = 'min-h-[160px] p-4 border-r border-b border-slate-100 bg-white relative hover:bg-blue-50/30 transition-colors group cursor-pointer';
                 cell.onclick = (e) => { if (!e.target.closest('.add-btn-trigger')) window.openDayView(dayStr); };
-                cell.innerHTML = `<div class="flex justify-between items-start mb-3"><span class="text-sm font-black ${posts.length > 0 ? 'text-blue-600 underline decoration-2' : 'text-slate-300'}">${i}</span>${currentUser === 'admin' ? `<button onclick="event.stopPropagation(); window.openAddModal('${dayStr}')" class="add-btn-trigger opacity-0 group-hover:opacity-100 text-blue-500 hover:text-blue-700 transition-all transform hover:scale-110"><i class="fas fa-plus-circle fa-lg"></i></button>` : ''}</div><div class="space-y-1.5">${posts.map(p => `<div class="text-[9px] px-2.5 py-1.5 rounded-lg truncate font-black tracking-tight ${p.brand === 'atc' ? 'bg-red-50 text-red-700 border border-red-100' : p.brand === 'aor' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}">${p.brand.toUpperCase()}</div>`).join('')}</div>`;
+                cell.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-sm font-black ${posts.length > 0 ? 'text-blue-600 underline decoration-2' : 'text-slate-300'}">${i}</span>
+                        ${currentUser === 'admin' ? `<button onclick="event.stopPropagation(); window.openAddModal('${dayStr}')" class="add-btn-trigger opacity-0 group-hover:opacity-100 text-blue-500 hover:text-blue-700 transition-all transform hover:scale-110"><i class="fas fa-plus-circle fa-lg"></i></button>` : ''}
+                    </div>
+                    <div class="space-y-1.5">
+                        ${posts.map(p => `
+                            <div class="text-[9px] px-2.5 py-1.5 rounded-lg truncate font-black tracking-tight ${p.brand === 'atc' ? 'bg-red-50 text-red-700 border border-red-100' : p.brand === 'aor' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-amber-50 text-amber-700 border border-amber-100'}">
+                                ${p.brand.toUpperCase()}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
                 body.appendChild(cell);
             }
         };
