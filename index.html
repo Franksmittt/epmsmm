@@ -14,7 +14,7 @@
         .brand-atc { border-top: 5px solid #ef4444; }
         .brand-aor { border-top: 5px solid #10b981; }
         .brand-abm { border-top: 5px solid #f59e0b; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .fb-blue { background-color: #1877F2; }
         .modal-bg { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); }
         
@@ -35,7 +35,7 @@
 
     <!-- LOGIN OVERLAY -->
     <div id="login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f172a]">
-        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all">
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-md text-center transform transition-all duration-500" id="login-card">
             <div class="fb-blue w-20 h-20 rounded-2xl flex items-center justify-center text-white mx-auto mb-8 shadow-lg shadow-blue-500/30">
                 <i class="fas fa-layer-group fa-2xl"></i>
             </div>
@@ -46,8 +46,8 @@
                 <input type="password" id="login-pass" 
                        class="w-full px-4 py-4 rounded-2xl border-2 border-slate-100 focus:border-blue-500 outline-none text-center text-3xl tracking-[1em] transition-all" 
                        placeholder="••••"
-                       onkeyup="if(event.key === 'Enter') handleLogin()">
-                <button onclick="handleLogin()" class="w-full fb-blue hover:bg-blue-600 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]">
+                       onkeyup="if(event.key === 'Enter') window.handleLogin()">
+                <button onclick="window.handleLogin()" class="w-full fb-blue hover:bg-blue-600 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]">
                     Unlock Terminal
                 </button>
             </div>
@@ -58,7 +58,7 @@
     </div>
 
     <!-- MAIN APP CONTENT -->
-    <div id="app-content" class="hidden">
+    <div id="app-content" class="hidden opacity-0 transition-opacity duration-500">
         <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <div class="fb-blue p-2.5 rounded-xl text-white shadow-md shadow-blue-500/20">
@@ -66,14 +66,17 @@
                 </div>
                 <div>
                     <h1 class="font-extrabold text-lg text-slate-800 tracking-tight">Endpoint Media <span class="text-slate-400 font-normal mx-1">|</span> <span class="text-blue-600">Jaco van Zyl</span></h1>
-                    <p id="user-role-display" class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]"></p>
+                    <div class="flex items-center gap-2">
+                        <p id="user-role-display" class="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em]"></p>
+                        <span id="db-status" class="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-400 uppercase">Offline Mode</span>
+                    </div>
                 </div>
             </div>
             <div class="flex gap-2 items-center bg-slate-100 p-1.5 rounded-2xl">
-                <button onclick="switchView('today')" id="btn-today" class="px-5 py-2 text-sm font-bold rounded-xl transition-all">Daily Tasks</button>
-                <button onclick="switchView('calendar')" id="btn-calendar" class="px-5 py-2 text-sm font-bold rounded-xl transition-all">Calendar View</button>
+                <button onclick="window.switchView('today')" id="btn-today" class="px-5 py-2 text-sm font-bold rounded-xl transition-all">Daily Tasks</button>
+                <button onclick="window.switchView('calendar')" id="btn-calendar" class="px-5 py-2 text-sm font-bold rounded-xl transition-all">Calendar View</button>
                 <div class="w-px h-4 bg-slate-300 mx-1"></div>
-                <button onclick="logout()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                <button onclick="window.logout()" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
                     <i class="fas fa-power-off"></i>
                 </button>
             </div>
@@ -92,7 +95,7 @@
                         <p class="text-slate-500 mt-1 font-medium">Download images from <code class="bg-slate-200 px-1 rounded">/images</code> and use the captions below.</p>
                     </div>
                     <div id="admin-actions-today" class="hidden">
-                        <button onclick="openAddModal()" class="fb-blue hover:bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-blue-500/20 transition-all active:scale-95">
+                        <button onclick="window.openAddModal()" class="fb-blue hover:bg-blue-600 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-blue-500/20 transition-all active:scale-95">
                             <i class="fas fa-plus"></i> Schedule New Ad
                         </button>
                     </div>
@@ -135,7 +138,7 @@
                     <h3 class="text-2xl font-black text-slate-800" id="form-modal-title">Schedule Facebook Ad</h3>
                     <p class="text-slate-500 text-sm font-medium">Enter the campaign details below</p>
                 </div>
-                <button onclick="closeFormModal()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 hover:text-slate-600 transition-all">
+                <button onclick="window.closeFormModal()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 hover:text-slate-600 transition-all">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -183,8 +186,8 @@
                 </div>
             </div>
             <div class="p-8 bg-slate-50/50 border-t border-slate-100 flex gap-4 flex-shrink-0">
-                <button onclick="savePost()" class="flex-1 fb-blue text-white font-black py-4 rounded-2xl hover:bg-blue-600 transition-all shadow-xl shadow-blue-500/20 active:scale-95">
-                    Save Ad to Cloud
+                <button onclick="window.savePost()" class="flex-1 fb-blue text-white font-black py-4 rounded-2xl hover:bg-blue-600 transition-all shadow-xl shadow-blue-500/20 active:scale-95">
+                    Save Ad
                 </button>
             </div>
         </div>
@@ -198,7 +201,7 @@
                     <h3 class="text-2xl font-black text-slate-800" id="day-modal-title">...</h3>
                     <p class="text-slate-500 text-sm font-medium">Scheduled ads for this date</p>
                 </div>
-                <button onclick="closeDayModal()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 transition-all">
+                <button onclick="window.closeDayModal()" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-600 transition-all">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -216,52 +219,68 @@
         <span id="toast-msg">Action successful!</span>
     </div>
 
-    <!-- FIREBASE INTEGRATION -->
+    <!-- FIREBASE & LOGIC INTEGRATION -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, onSnapshot, addDoc, updateDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = JSON.parse(__firebase_config);
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'epmsmm-dashboard';
-
         const ADMIN_PASS = 'a12345';
         const POSTER_PASS = '1234';
-        
-        let currentUser = null; 
-        let ads = [];
-        let authReady = false;
 
-        // Init Auth
-        const initAuth = async () => {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+        // 1. DATA STATE & FALLBACK
+        let ads = JSON.parse(localStorage.getItem('endpoint_media_ads_local')) || [];
+        let currentUser = null;
+        let authReady = false;
+        let db, auth;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'epmsmm-dashboard';
+
+        // 2. FIREBASE SETUP
+        const getFirebaseConfig = () => {
+            try {
+                if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+                    return JSON.parse(__firebase_config);
+                }
+            } catch (e) { }
+            return null; 
         };
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authReady = true;
-                // Start real-time sync
-                const adsCol = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
-                onSnapshot(adsCol, (snapshot) => {
-                    ads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    window.renderCalendar();
-                    window.renderToday();
-                }, (error) => console.error("Snapshot error:", error));
-            }
-        });
+        const config = getFirebaseConfig();
 
-        // Global functions for the UI
+        if (config) {
+            const app = initializeApp(config);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            const initAuth = async () => {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            };
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    authReady = true;
+                    document.getElementById('db-status').innerText = "Cloud Synced";
+                    document.getElementById('db-status').className = "text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-green-100 text-green-600 uppercase";
+                    
+                    const adsCol = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
+                    onSnapshot(adsCol, (snapshot) => {
+                        ads = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        window.renderCalendar();
+                        window.renderToday();
+                    });
+                }
+            });
+            initAuth();
+        }
+
+        // 3. UI FUNCTIONS (Attached to window so HTML can see them)
         window.handleLogin = () => {
             const pass = document.getElementById('login-pass').value;
             const error = document.getElementById('login-error');
-            const input = document.getElementById('login-pass');
             
             if (pass === ADMIN_PASS) {
                 currentUser = 'admin';
@@ -271,32 +290,35 @@
                 loginSuccess('WELCOME BACK, YOGS');
             } else {
                 error.classList.remove('hidden');
-                input.classList.add('border-red-500', 'animate-shake');
+                document.getElementById('login-pass').classList.add('animate-shake', 'border-red-500');
                 setTimeout(() => {
                     error.classList.add('hidden');
-                    input.classList.remove('border-red-500', 'animate-shake');
+                    document.getElementById('login-pass').classList.remove('animate-shake', 'border-red-500');
                 }, 2000);
             }
         };
 
         function loginSuccess(label) {
-            document.getElementById('login-overlay').classList.add('opacity-0');
+            const overlay = document.getElementById('login-overlay');
+            const appContent = document.getElementById('app-content');
+            
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            appContent.classList.remove('hidden');
+            
             setTimeout(() => {
-                document.getElementById('login-overlay').classList.add('hidden');
-                document.getElementById('app-content').classList.remove('hidden');
+                overlay.classList.add('hidden');
+                appContent.classList.remove('opacity-0');
+                appContent.classList.add('opacity-100');
                 document.getElementById('user-role-display').innerText = label;
                 
                 if (currentUser === 'admin') {
                     document.getElementById('admin-actions-today').classList.remove('hidden');
                     document.getElementById('admin-day-footer').classList.remove('hidden');
-                } else {
-                    document.getElementById('admin-actions-today').classList.add('hidden');
-                    document.getElementById('admin-day-footer').classList.add('hidden');
                 }
                 
                 window.renderCalendar();
                 window.switchView('calendar');
-            }, 300);
+            }, 500);
         }
 
         window.logout = () => location.reload();
@@ -307,8 +329,7 @@
             const bt = document.getElementById('btn-today');
             const bc = document.getElementById('btn-calendar');
 
-            vt.classList.add('hidden');
-            vc.classList.add('hidden');
+            vt.classList.add('hidden'); vc.classList.add('hidden');
             bt.className = "px-5 py-2 text-sm font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800";
             bc.className = "px-5 py-2 text-sm font-bold rounded-xl transition-all text-slate-500 hover:text-slate-800";
 
@@ -337,14 +358,12 @@
             if (currentUser !== 'admin') return;
             const ad = ads.find(a => a.id == id);
             if (!ad) return;
-
             document.getElementById('form-modal-title').innerText = "Edit Scheduled Ad";
             document.getElementById('f-id').value = ad.id;
             document.getElementById('f-brand').value = ad.brand;
             document.getElementById('f-date').value = ad.date;
             document.getElementById('f-type').value = ad.type;
             document.getElementById('f-caption').value = ad.caption;
-            
             window.closeDayModal();
             document.getElementById('form-modal').classList.remove('hidden');
             updateFilenamePreview();
@@ -365,7 +384,6 @@
         });
 
         window.savePost = async () => {
-            if (!authReady) return;
             const brandNames = { atc: 'Alberton Tyre Clinic', aor: 'Absolute Offroad', abm: 'Alberton Battery Mart' };
             const id = document.getElementById('f-id').value;
             const brand = document.getElementById('f-brand').value;
@@ -377,27 +395,48 @@
 
             const payload = { brand, brandName: brandNames[brand], date, type, caption, timestamp: Date.now() };
 
-            try {
+            if (authReady) {
+                // Save to Cloud
+                try {
+                    if (id) {
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', id), payload);
+                        showToast('Ad updated in Cloud!');
+                    } else {
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads'), payload);
+                        showToast('Ad synced to Cloud!');
+                    }
+                } catch (e) { showToast('Sync Error!', 'warning'); }
+            } else {
+                // Save Locally
                 if (id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', id), payload);
-                    showToast('Ad updated in Cloud!');
+                    const idx = ads.findIndex(a => a.id == id);
+                    ads[idx] = { ...payload, id };
                 } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads'), payload);
-                    showToast('Ad synced to Cloud!');
+                    ads.push({ ...payload, id: Date.now() });
                 }
-                window.closeFormModal();
-            } catch (e) {
-                showToast('Sync Error!', 'warning');
+                localStorage.setItem('endpoint_media_ads_local', JSON.stringify(ads));
+                showToast('Ad saved locally!');
+                window.renderCalendar();
+                window.renderToday();
             }
+            window.closeFormModal();
         };
 
         window.deletePost = async (id) => {
-            if (!authReady || !confirm('Permanently remove from Cloud?')) return;
-            try {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', id));
-                showToast('Ad removed from Cloud.', 'warning');
-                window.closeDayModal();
-            } catch (e) { showToast('Delete Error!', 'warning'); }
+            if (!confirm('Permanently remove this ad?')) return;
+            if (authReady) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ads', id));
+                    showToast('Ad removed from Cloud.', 'warning');
+                } catch (e) { showToast('Delete Error!', 'warning'); }
+            } else {
+                ads = ads.filter(a => a.id != id);
+                localStorage.setItem('endpoint_media_ads_local', JSON.stringify(ads));
+                showToast('Ad removed locally.');
+                window.renderCalendar();
+                window.renderToday();
+            }
+            window.closeDayModal();
         };
 
         window.renderToday = () => {
@@ -410,11 +449,10 @@
                 container.innerHTML = `<div class="col-span-full py-20 text-center bg-white rounded-[2.5rem] border-2 border-dashed border-slate-200"><i class="fas fa-calendar-day text-slate-200 text-6xl mb-4"></i><p class="text-slate-400 font-bold text-xl">No ads scheduled for today.</p></div>`;
                 return;
             }
-
             container.innerHTML = items.map(ad => `
                 <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 overflow-hidden flex flex-col brand-${ad.brand} transition-transform hover:scale-[1.02] duration-300">
                     <div class="aspect-${ad.type === 'story' ? '9/16' : 'square'} bg-slate-100 relative group overflow-hidden">
-                        <img src="images/${ad.brand}_${ad.date}_${ad.type}.jpg" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/600x600/f8fafc/64748b?text=${ad.brand.toUpperCase()}+MISSING'">
+                        <img src="images/${ad.brand}_${ad.date}_${ad.type}.jpg" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x600/f8fafc/64748b?text=${ad.brand.toUpperCase()}+MISSING'">
                         <div class="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4">
                             <a href="images/${ad.brand}_${ad.date}_${ad.type}.jpg" download class="bg-white text-slate-900 px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-2xl hover:bg-blue-50 transition-colors"><i class="fas fa-download"></i> Save Image</a>
                             ${currentUser === 'admin' ? `<div class="flex gap-2"><button onclick="window.openEditModal('${ad.id}')" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg"><i class="fas fa-edit"></i> Edit</button><button onclick="window.deletePost('${ad.id}')" class="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg"><i class="fas fa-trash-alt"></i></button></div>` : ''}
@@ -470,8 +508,9 @@
             setTimeout(() => { t.classList.add('opacity-0', 'translate-y-4'); t.classList.remove('opacity-100', 'translate-y-0'); }, 3000);
         }
 
-        initAuth();
-        document.getElementById('login-pass').focus();
+        // Auto-focus the login input
+        window.onload = () => document.getElementById('login-pass').focus();
+
     </script>
 </body>
 </html>
